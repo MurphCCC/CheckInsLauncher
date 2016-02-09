@@ -1,0 +1,41 @@
+//This first block tells finder to hide every open window.  It is optional as I just added it for my own preference.
+
+try
+	tell application "Finder"
+		activate
+		set visible of every process whose visible is true and name is not "Finder" to false
+		close every window
+	end tell
+end try
+
+//Launch ARD, wait 1.25 seconds, take control of all 8 MacMinis, wait 2 seconds then resize and rearrange one by one.
+tell application "Remote Desktop"
+	activate
+	delay 1.25
+	control (every computer whose name starts with "MacMini")
+	delay 2
+	set the bounds of the first window whose name starts with "MacMini" to {0, 23, 400, 400}
+	delay 0.5
+	
+	set the bounds of the second window whose name starts with "MacMini" to {400, 23, 800, 400}
+	delay 0.5
+	
+	set the bounds of the third window whose name starts with "MacMini" to {800, 23, 1200, 400}
+	delay 0.5
+	
+	set the bounds of the fourth window whose name starts with "MacMini" to {1200, 23, 1600, 400}
+	delay 0.5
+	
+	set the bounds of the fifth window whose name starts with "MacMini" to {0, 365, 400, 706}
+	delay 0.5
+	
+	set the bounds of the sixth window whose name starts with "MacMini" to {400, 365, 800, 706}
+	delay 0.5
+	
+	set the bounds of the seventh window whose name starts with "MacMini" to {800, 365, 1200, 706}
+	delay 0.5
+	
+	set the bounds of the eighth window whose name starts with "MacMini" to {1200, 365, 1600, 706}
+	delay 1.25
+	close window "Remote Desktop"
+end tell
