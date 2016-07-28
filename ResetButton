@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#  The purpose of this script is to automatically set the resolution of the mac mini to 1024x768 so that
+#  it matches the resolution of an iPad.  Their does not appear to be any easy way to do this without
+#  using some third party app.  I have installed a copy of screenresolution on these mini's which can
+#  be found on Github.  Once we have the proper resolution set, we then want to close any open instances
+#  of Firefox, open a new window, load the url for the Check In stations and put Firefox into full screen
+#  mode.  This script is set to run on login, and as well it is placed in the dock in the event that it
+#  needs to be reran after login.
+#
+#  We need to find out what resolutions are available to us so that the script doesn't complain later on.
+#  For whatever reason we have had issues when trying to set the same resolution manually on all the
+#  Mac Minis.  To get around this we run our screen resolution utility and filter out the closet
+#  resolution to 1024x768.  For some reason, some of these systems list different variations of
+#  1024X768.  For example, 1024x768x @60 1024x768x32@60.  Not sure why this is but to get around it
+#  We can run the following command...
+
+resolution=`/usr/local/bin/screenresolution list | sed 's/ //g' | grep 1024x768x32 | awk '{print $1}'`
+
+
+#  Kill Firefox if it is already running so that we don't end up with multiple instances.
+#  Check-Ins will complain if the site is open in multiple tabs and windows.  Since the
+#  purpose of this script is a reset button of sorts, we will assume that Firefox may
+#  already be running and needs to be "refreshed."  
+
+osascript -e 'tell application "Firefox" to quit'
+
+#  Make sure that our screen resolution get's set to 1024x768.  For whatever reason not all of the minis
+#  will work with the same command so we need to run screenresolution and find the list of available modes
+#  to use for our variable.
+/usr/local/bin/screenresolution set $resolution
+
+#  Open Firefox
+
+osascript -e 'tell application "Firefox" to open location "https://check-ins.planningcenteronline.com/station/events"'
+
+osascript -e 'tell application "System Events" to set frontmost of process "firefox" to true'
+
+sleep 2
+
+osascript -e 'tell application "System Events" to keystroke "f" using {control down, command down}'
