@@ -39,3 +39,6 @@ osascript -e 'tell application "System Events" to keystroke "f" using {control d
 # Finally, kill Terminal when we are done.
 
 killall Terminal
+
+
+#This is all old, don't use this anymore...
